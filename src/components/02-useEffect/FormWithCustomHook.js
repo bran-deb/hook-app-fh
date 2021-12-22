@@ -1,44 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useForm } from '../../hooks/useForm'
 import './effects.css'
-import { Messaje } from './Messaje'
 
-export const SimpleForm = () => {
+export const FormWithCustomHook = () => {
 
-    const [formState, setFormState] = useState({
+
+    const [formValues, handleInputChange] = useForm({
         name: '',
         email: '',
+        password: '',
     })
 
-    const { name, email } = formState
+    const { name, email, password } = formValues
 
     useEffect(() => {
-        // console.log('hey')
-    }, [])
-
-    useEffect(() => {
-        // console.log('cambio formulario')
-    }, [formState])
-
-    useEffect(() => {
-        // console.log('cambio name')
-    }, [name])
-
-    useEffect(() => {
-        // console.log('cambio email')
+        console.log('email cambio')
     }, [email])
 
-
-    const handleInputChange = ({ target }) => {
-        setFormState({
-            ...formState,
-            [target.name]: target.value
-        })
+    const hanldeInputSubmit = (e) => {
+        e.preventDefault()
+        console.log(formValues)
     }
 
 
     return (
-        <>
-            <h1>useEffect</h1>
+        <form onSubmit={hanldeInputSubmit}>
+            <h1>FormWithCustomHook</h1>
             <hr />
             <div className='form-group'>
                 <input
@@ -64,7 +51,18 @@ export const SimpleForm = () => {
                 />
             </div>
 
-            {(name === '123') && <Messaje />}
-        </>
+            <div className='form-group'>
+                <input
+                    type='password'
+                    name='password'
+                    className='form-control'
+                    placeholder='******'
+                    value={password}
+                    onChange={handleInputChange}
+                />
+            </div>
+
+            <button type="submit" className="btn btn-primary">Guardar</button>
+        </form>
     )
 }
