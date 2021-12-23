@@ -4,26 +4,26 @@ import { useState } from "react"
 //un customhook es una function
 export const useCounter = (initialState = 1) => {
 
-    const [state, setState] = useState(initialState)
+    const [counter, setCounter] = useState(initialState)
 
     const increment = () => {
-        setState(state + 1)
+        setCounter(counter + 1)
     }
     const decrement = () => {
-        setState(state - 1)
+        setCounter(counter - 1)
     }
     const product = (num = 2) => {
-        setState(state * num)
+        setCounter(counter * num)
     }
     const division = (num = 2) => {
-        setState(state / num)
+        setCounter(counter / num)
     }
     const reset = () => {
-        setState(initialState)
+        setCounter(initialState)
     }
 
     return {
-        state,
+        counter,
         increment,
         decrement,
         product,
