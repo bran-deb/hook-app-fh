@@ -11,9 +11,27 @@ const initialState = [{
 export const TodoApp = () => {
 
     //useReducer usa a todoReducer
-    const [todos] = useReducer(todoReducer, initialState)
+    const [todos, dispatch] = useReducer(todoReducer, initialState)
     //mostramos el listado de todos
     console.log(todos)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        //creamos un nuevo todo
+        const newTodo = {
+            id: new Date().getTime(),
+            desc: 'Nueva tarea',
+            done: false
+        }
+        //action del reducer tiene el newtodo
+        const action = {
+            type: 'add',//esta accion debe estar en el reducer
+            payload: newTodo
+        }
+        //el dispatch manda la action al reducer que lo va a usar
+        dispatch(action)
+    }
+
 
     return (
         <div>
@@ -45,7 +63,8 @@ export const TodoApp = () => {
                     <h4>agregar TODO</h4>
                     <hr />
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
+
                         <input
                             type='text'
                             name='description'
@@ -53,7 +72,11 @@ export const TodoApp = () => {
                             placeholder='Aprender ...'
                             autoComplete='off'
                         />
-                        <button className='btn btn-outline-primary mt-1 btn-block'>
+
+                        <button
+                            type="submit"
+                            className="btn btn-outline-primary mt-1 btn-block"
+                        >
                             Agregar
                         </button>
                     </form>
