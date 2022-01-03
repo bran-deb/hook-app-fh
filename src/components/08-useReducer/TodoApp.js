@@ -1,26 +1,44 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { todoReducer } from './todoReducer'
+import { useForm } from '../../hooks/useForm'
 import './styles.css'
 
-const initialState = [{
-    id: new Date().getTime(),
-    desc: 'Aprender react',
-    done: false
-}]
+//se llama la funcion init y lo que retorna es el inicialState
+const init = () => {
+    //traemos los datos del localStorage si es que hay datos
+    return JSON.parse(localStorage.getItem('todos')) || []
+
+    // return [{
+    //     id: new Date().getTime(),
+    //     desc: 'Aprender react',
+    //     done: false
+    // }]
+}
 
 export const TodoApp = () => {
 
-    //useReducer usa a todoReducer
-    const [todos, dispatch] = useReducer(todoReducer, initialState)
+    const [{ description }, handleInputChange, resetForm] = useForm({
+        description: ''//asociamos con el form
+    })
+    //useReducer usa a todoReducer (initial state es un array vacio)
+    const [todos, dispatch] = useReducer(todoReducer, [], init)
     //mostramos el listado de todos
-    console.log(todos)
+    // console.log(description)
+
+    //guardamos en el localStorage cuando haya cambios en los todos
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos))
+    }, [todos])
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (description.trim().length <= 1) {
+            return
+        }
         //creamos un nuevo todo
         const newTodo = {
             id: new Date().getTime(),
-            desc: 'Nueva tarea',
+            desc: description,//le pasamos la description del input
             done: false
         }
         //action del reducer tiene el newtodo
@@ -30,6 +48,7 @@ export const TodoApp = () => {
         }
         //el dispatch manda la action al reducer que lo va a usar
         dispatch(action)
+        resetForm()
     }
 
 
@@ -71,6 +90,8 @@ export const TodoApp = () => {
                             className='form-control'
                             placeholder='Aprender ...'
                             autoComplete='off'
+                            value={description}//
+                            onChange={handleInputChange}
                         />
 
                         <button
