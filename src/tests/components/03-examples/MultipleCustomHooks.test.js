@@ -45,6 +45,7 @@ describe('Pruebas en multipleCustomHooks', () => {
         expect(wrapper.find('.alert').exists()).toBe(false)             //no existe loading en la clase alert
         expect(wrapper.find('.mb-4').text().trim()).toBe('Hola Mundo')  //la clase mb-4 contiene el quote
         expect(wrapper.find('footer').text().trim()).toBe('jairo')      //footer es una etiqueta y contiene author
+        console.log(wrapper.html())
     })
 
 })
